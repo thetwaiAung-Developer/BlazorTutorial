@@ -1,0 +1,35 @@
+﻿@page "/sample-javascript"
+@inject IJSRuntime jsRuntime
+
+<h3>SampleJavascript</h3>
+
+<button class="mb-3 btn btn-warning" @onclick="ShowAlert">Alert</button>
+<button class="mb-3 btn btn-success" @onclick="ShowAlert">Confirm</button>
+<button class="mb-3 btn btn-primary" @onclick="CallInvokedMethodJavascript">Call Instance Method</button>
+
+@code {
+
+    private void ShowAlert()
+    {
+        jsRuntime.InvokeVoidAsync("alert", "Hello Alert javascript from c# method.");
+    }
+
+    private async Task Confirm()
+    {
+        var result = await jsRuntime.InvokeAsync<bool>("confirm", "Do you want to delete?");
+    }
+
+    private async Task CallInvokedMethodJavascript()
+    {
+        var sampleReference = await jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/sample.js");
+
+        //await jsRuntime.InvokeVoidAsync("callInstanceMethod", DotNetObjectReference.Create(this));
+        await sampleReference.InvokeVoidAsync("callInstanceMethod", DotNetObjectReference.Create(this));
+    }
+
+    [JSInvokable]
+    public static Task<string> GetValueFromInstance()
+    {
+        return Task.FromResult<string>("Hello world from instance");
+    }
+}

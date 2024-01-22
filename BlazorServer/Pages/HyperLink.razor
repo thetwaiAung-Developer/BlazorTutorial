@@ -1,0 +1,16 @@
+﻿@page "/hyperLink"
+@inject NavigationManager navigationManager
+
+<h3 class="mb-3">Test HyperLink</h3>
+<a class="mb-3" href="./" >Home Page</a>
+
+<button @onclick="NavLink" class="btn btn-primary">Nav Link to Home</button>
+
+
+@code {
+
+    private void NavLink()
+    {
+        navigationManager.NavigateTo("./");
+    }
+}

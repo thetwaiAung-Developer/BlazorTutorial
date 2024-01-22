@@ -1,0 +1,71 @@
+﻿@page "/bloglistComponent"
+
+@if (BlogList is null)
+{
+    <p>Blogs are loading ....</p>
+}
+else
+{
+    @*  <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Blog Title</th>
+                <th scope="col">Blog Author</th>
+                <th scope="col">Blog Content</th>
+                <th scope="col">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var blog in BlogList)
+            {
+                <tr>
+                    <th scope="row"></th>
+                    <td>@blog.Blog_Title</td>
+                    <td>@blog.Blog_Author</td>
+                    <td>@blog.Blog_Content</td>
+                    <td>
+                        <a class="btn btn-warning" asp-action="edit" asp-controller="blogajax">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        <button type="button" @onclick="@(()=>  DeleteBlog.InvokeAsync(blog))"
+                                class="btn btn-danger" id="btnDelete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table> *@
+
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="2" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@BlogList" TItem="BlogModel" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            <RadzenDataGridColumn TItem="BlogModel" Property="Blog_Id" Filterable="false" Title="ID" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="BlogModel" Property="Blog_Title" Title="Blog Title" Frozen="true" Width="160px" />
+            <RadzenDataGridColumn TItem="BlogModel" Property="Blog_Author" Title="Blog Author" Width="160px" />
+            <RadzenDataGridColumn TItem="BlogModel" Property="Blog_Content" Title="Blog Content" Width="200px" />
+            <RadzenDataGridColumn TItem="BlogModel" Context="blog" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
+                <Template Context="blog">
+                    <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Size="ButtonSize.Medium"
+                                 >
+                    </RadzenButton>
+                    <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium"
+                                  Click="@(() => DeleteBlog.InvokeAsync(blog) )" @onclick:stopPropagation="true">
+                    </RadzenButton>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+}
+
+
+@code {
+
+    [Parameter]
+    public List<BlogModel> BlogList { get; set; }
+
+    [Parameter]
+    public EventCallback<BlogModel> DeleteBlog { get; set; }
+
+}

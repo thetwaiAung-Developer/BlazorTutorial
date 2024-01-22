@@ -1,0 +1,18 @@
+﻿@page "/blogList";
+@inject IHttpClientFactory ClientFactory
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using BlazorServer.Data
+@using Newtonsoft.Json;
+
+<h3>Blog</h3>
+
+@if (Error || BlogList is null)
+{
+    <p>Unable to get Blogs. Please try again later.</p>
+}
+else
+{
+    <BlogListComponent BlogList="BlogList"/>
+}
+

@@ -1,0 +1,50 @@
+﻿@page "/demo01"
+@inject BlogService blogService
+
+<h3>demo01</h3>
+
+<input class="mb-2 " placeholder="Blog Title" @bind="blogContent" />
+<br />
+<input class="mb-2" placeholder="Blog Author" @bind="blogAuthor" />
+<br />
+<input class="mb-2" placeholder="Blog Content" @bind="blogTitle" />
+<br />
+<button class="btn btn-success" @onclick="AddBlog">Add Blog</button>
+<hr />
+
+@if (blogService.BlogList.Count is 0)
+{
+    <b>No Blog to display.</b>
+}
+else
+{
+    foreach (var blog in blogService.BlogList)
+    {
+        <label>Blog Title : </label>
+        <b>@blog.Blog_Title</b>
+        <br />
+        <label>Blog Author : </label>
+        <b>@blog.Blog_Author</b>
+        <br />
+        <label>Blog Content : </label>
+        <b>@blog.Blog_Content</b>
+        <hr />
+    }
+}
+
+
+@code {
+    private string blogTitle, blogAuthor, blogContent;
+
+    private void AddBlog()
+    {
+        var blog = new BlogModel()
+            {
+                Blog_Title = blogTitle,
+                Blog_Author = blogAuthor,
+                Blog_Content = blogContent
+            };
+
+        blogService.AddBlog(blog);
+    }
+}

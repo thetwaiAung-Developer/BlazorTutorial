@@ -1,0 +1,59 @@
+﻿@page "/"
+@inject IJSRuntime jsRuntime
+
+<PageTitle>Index</PageTitle>
+
+<BlogListComponent BlogList="Blogs" DeleteBlog="RequestPermission" />
+
+<DeleteConfirmation @ref="deleteConfirmation" OnConfirmed="OnDeleteConfirm"></DeleteConfirmation>
+
+@code {
+    private List<BlogModel>? Blogs;
+    private DeleteConfirmation? deleteConfirmation;
+
+    private async void RequestPermission(BlogModel blog)
+    {
+        deleteConfirmation!.BodyContent = $"Are you sure want to delete {blog.Blog_Title} ? ";
+        deleteConfirmation!.Blog = blog;
+        deleteConfirmation!.Show();
+    }
+
+    private async Task OnDeleteConfirm(BlogModel blog)
+    {
+        Blogs!.Remove(blog);
+        deleteConfirmation!.Hide();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Blogs = new List<BlogModel>
+        {
+            new BlogModel
+            {
+                Blog_Id = 1,
+                Blog_Title = "Food",
+                Blog_Author = "Mandy",
+                Blog_Content = "Food Content"
+            },
+            new BlogModel
+            {
+                Blog_Id = 1,
+                Blog_Title = "Travel",
+                Blog_Author = "Chan",
+                Blog_Content = "Travel Content"
+            },
+            new BlogModel
+            {
+                Blog_Id = 1,
+                Blog_Title = "Youtube",
+                Blog_Author = "David",
+                Blog_Content = "Youtube Content"
+            },
+        };
+
+        await base.OnInitializedAsync();
+    }
+
+}
+
+
