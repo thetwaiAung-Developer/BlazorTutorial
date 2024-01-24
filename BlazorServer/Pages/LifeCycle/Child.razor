@@ -1,0 +1,55 @@
+﻿<h5> Child: </h5>
+<h6>Counter : @Counter</h6>
+
+<h5>Life cycle events as per the order of execution.</h5>
+<br />
+@foreach (string item in Events)
+{
+    <h6>@item</h6>
+    <br />
+}
+
+@code
+{
+    [Parameter]
+    public int Counter { get; set; }
+
+    List<string> Events = new();
+
+    protected override void OnInitialized()
+    {
+        Events.Add("1. OnInitialized");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Events.Add("2. OnInitializedAsync");
+        await Task.Delay(2000);
+    }
+
+    protected override void OnParametersSet()
+    {
+        Events.Add("3. OnParametersSet");
+        Task.Delay(2000);
+    }
+
+    // protected override async Task OnParametersSetAsync()
+    // {
+    //     Events.Add("4. OnParametersSetAsync");
+    //     await Task.Delay(2000);
+    // }
+
+    //check if the component is first render or after render
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Events.Add("4. OnAfterRender: first render");
+        }
+        else
+        {
+            Events.Add("4. OnAfterRender: After first render");
+        }
+        Task.Delay(2000);
+    }
+}

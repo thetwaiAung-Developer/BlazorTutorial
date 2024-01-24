@@ -1,0 +1,23 @@
+﻿@page "/parameterset/{Parameter}"
+@inject IJSRuntime JSRuntime
+
+<div class="border border-primary border-3 m-3">
+    <h3>ChildComponent</h3>
+    Component Parameter: @Parameter
+</div>
+
+@code {
+    [Parameter]
+    public string Parameter { get; set; } = "";
+
+    protected override void OnParametersSet()
+    {
+        JSRuntime.InvokeVoidAsync("alert", "ParametersSet phase of the CHILD component triggered.");
+    }
+
+    // protected override Task OnInitializedAsync()
+    // {
+    //     Parameter = "Hello World 2";
+    //     return base.OnInitializedAsync();
+    // }
+}

@@ -1,0 +1,18 @@
+﻿@page "/parent";
+
+<h4> Parent: </h4>
+<button onclick="@IncreaseCounter"> Update Counter</button>
+<hr>
+
+<Child Counter="@Counter"></Child>
+
+@code
+{
+    public int Counter { get; set; }
+
+    private void IncreaseCounter()
+    {
+        Counter++;
+    }
+}
+
