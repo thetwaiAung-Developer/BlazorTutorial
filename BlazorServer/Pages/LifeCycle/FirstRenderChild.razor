@@ -1,0 +1,25 @@
+﻿@inject IJSRuntime js
+
+<h5> Child, Counter: @Counter</h5>
+<button onclick="@IncreaseCounter"> Update Counter</button>
+<br />
+
+@code
+{
+    public int Counter { get; set; }
+
+    //the value is ignore in UI but store value
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Counter ++ ;
+        // Console.WriteLine("OnAfterRender: Current Value of counter: " + Counter);
+        js.InvokeVoidAsync("console.log", "OnAfterRender: Current Value of counter: " + Counter);
+    }
+
+    private void IncreaseCounter()
+    {
+        Counter += 2;
+        // Console.WriteLine("IncreaseCounter: Current Value of counter: " + Counter);
+        js.InvokeVoidAsync("console.log", "IncreaseCounter: Current Value of counter: " + Counter);
+    }
+}
