@@ -1,0 +1,37 @@
+﻿@page "/stateHasChanged"
+@inject IJSRuntime js
+
+<h3 class="mb-3">StateHasChanged</h3>
+
+<p class="mb-3">Counter Value : @Counter</p>
+
+<button @onclick="StartTimer">Increase</button>
+
+@code {
+
+    public int Counter { get; set; }
+
+    public void IncreaseCounter()
+    {
+        js.InvokeVoidAsync("console.log", $"Counter value =>{Counter}");
+    }
+
+    private void StartTimer()
+    {
+        Timer timer = new Timer(TimeCallBack, null, 1000, 1000);
+    }
+
+    private void TimeCallBack(object state)
+    {
+        if (Counter < 5)
+        {
+            Counter++;
+            Console.WriteLine("Counter " + Counter);
+            // stateHasChanged()
+            InvokeAsync(() => this.StateHasChanged());
+
+            js.InvokeVoidAsync("console.log", $"Counter value =>{Counter}");
+        }
+    }
+
+}
